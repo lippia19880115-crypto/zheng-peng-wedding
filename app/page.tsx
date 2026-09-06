@@ -1,20 +1,11 @@
 'use client';
 
 import { FormEvent, PointerEvent, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import {
-  CalendarDays,
-  Check,
-  ChevronLeft,
-  ChevronRight,
-  Clock3,
-  MapPinned,
-  Music2,
-  Pause,
-  Users,
-} from 'lucide-react';
+import { Check, ChevronLeft, ChevronRight, Clock3, Images, MapPinned, Music2, Pause, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { NativeSelect, NativeSelectOption } from '@/components/ui/native-select';
+import { Sheet, SheetContent, SheetDescription, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 
 type ModelContextTool = {
   registerTool: (
@@ -36,7 +27,9 @@ declare global {
   }
 }
 
-const slides = Array.from({ length: 11 }, (_, index) => `/invite-${String(index + 1).padStart(2, '0')}.png`);
+const allSlides = Array.from({ length: 11 }, (_, index) => `/invite-${String(index + 1).padStart(2, '0')}.png`);
+const primarySlides = allSlides.slice(0, 4);
+const gallerySlides = allSlides.slice(4);
 const weddingAt = new Date('2026-10-25T11:58:00+08:00');
 const amapUrl = 'https://surl.amap.com/1nY9E0y1fejz';
 
@@ -79,7 +72,7 @@ export default function Home() {
     setDirection(step === 1 ? 'next' : 'previous');
     setChanging(true);
     window.setTimeout(() => {
-      setCurrent((value) => (value + step + slides.length) % slides.length);
+      setCurrent((value) => (value + step + primarySlides.length) % primarySlides.length);
       setChanging(false);
     }, 430);
   }, [changing]);
@@ -90,7 +83,7 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    slides.forEach((src) => {
+    allSlides.forEach((src) => {
       const image = new Image();
       image.src = src;
     });
@@ -174,7 +167,7 @@ export default function Home() {
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    try { await submitRsvp(guestName, attendeeCount); } catch { /* message is shown in the form */ }
+    try { await submitRsvp(guestName, attendeeCount); } catch { /* form displays the error */ }
   }
 
   function handlePointerDown(event: PointerEvent<HTMLElement>) {
@@ -186,13 +179,11 @@ export default function Home() {
     if (pointerStart.current === null) return;
     const distance = event.clientX - pointerStart.current;
     pointerStart.current = null;
-    if (event.currentTarget.hasPointerCapture(event.pointerId)) {
-      event.currentTarget.releasePointerCapture(event.pointerId);
-    }
+    if (event.currentTarget.hasPointerCapture(event.pointerId)) event.currentTarget.releasePointerCapture(event.pointerId);
     if (Math.abs(distance) > 48) changeSlide(distance < 0 ? 1 : -1);
   }
 
-  const progress = useMemo(() => `${((current + 1) / slides.length) * 100}%`, [current]);
+  const progress = useMemo(() => `${((current + 1) / primarySlides.length) * 100}%`, [current]);
 
   return (
     <main className="invitation-shell">
@@ -213,9 +204,9 @@ export default function Home() {
           aria-label="查看下一页"
         >
           <img
-            key={slides[current]}
+            key={primarySlides[current]}
             className={`album-art ${changing ? `album-art--changing album-art--${direction}` : ''}`}
-            src={slides[current]}
+            src={primarySlides[current]}
             alt={`婚礼请柬第 ${current + 1} 页`}
           />
 
@@ -228,45 +219,21 @@ export default function Home() {
             </div>
           )}
 
-          {current === 1 && (
-            <div className="cover-copy letter-copy">
-              <p className="small-red">TO OUR DEAREST</p>
-              <h2>我们结婚啦</h2>
-              <p>从今天起，四季三餐，灯火可亲。<br />诚邀你来见证我们的幸福时刻。</p>
-              <p className="signature">郑柯杨 & 彭丽丹</p>
-            </div>
-          )}
-
           {current === 2 && (
             <div className="cover-copy countdown-copy">
-              <p className="small-red">COUNTING DOWN</p>
+              <p className="small-red">SAVE THE DATE</p>
               <h2>距离我们的婚礼</h2>
               <div className="countdown-grid">
                 {Object.entries(countdown).map(([key, value]) => (
                   <span key={key}><b>{String(value).padStart(2, '0')}</b><small>{{ days: '天', hours: '时', minutes: '分', seconds: '秒' }[key]}</small></span>
                 ))}
               </div>
-            </div>
-          )}
-
-          {current === 3 && (
-            <div className="cover-copy date-copy">
-              <p className="small-red">SAVE THE DATE</p>
-              <h2>十月 · OCTOBER</h2>
-              <div className="date-number"><span>25</span><i>2026</i></div>
-              <p>星期日 · 农历丙午年九月十六</p>
+              <p className="lunar-date">2026年10月25日 · 农历丙午年九月十六</p>
               <div className="info-row"><Clock3 size={17} /> 婚宴时间 11:58</div>
             </div>
           )}
 
-          {current === 4 && (
-            <div className="cover-copy quote-copy">
-              <p>爱不是彼此凝望<br />而是一起望向同一个方向</p>
-              <span>WALK WITH ME</span>
-            </div>
-          )}
-
-          {current === 5 && (
+          {current === 3 && (
             <div className="cover-copy location-copy">
               <div className="location-title">
                 <MapPinned size={23} />
@@ -278,70 +245,21 @@ export default function Home() {
               </a>
             </div>
           )}
-
-          {current === 6 && (
-            <div className="cover-copy lyric-copy lyric-copy--page7"><p>日子渺小重复<br />却都是幸福</p><span>SUMMER, YES</span></div>
-          )}
-
-          {current === 7 && (
-            <div className="cover-copy mini-copy mini-copy--page8"><CalendarDays size={20} /><p>2026 · 10 · 25<br />我们不见不散</p></div>
-          )}
-
-          {current === 8 && (
-            <div className="cover-copy lyric-copy lyric-copy--right"><p>往后余生<br />请多指教</p><span>TOGETHER, ALWAYS</span></div>
-          )}
-
-          {current === 9 && (
-            <div className="rsvp-panel" onClick={(event) => event.stopPropagation()} onPointerDown={(event) => event.stopPropagation()}>
-              {formState === 'success' ? (
-                <div className="rsvp-success" role="status">
-                  <span><Check size={28} /></span>
-                  <h2>回执已收到</h2>
-                  <p>{formMessage}</p>
-                  <Button type="button" onClick={() => setFormState('idle')}>修改回执</Button>
-                </div>
-              ) : (
-                <form onSubmit={handleSubmit}>
-                  <p className="small-red">RSVP</p>
-                  <h2>期待与你相见</h2>
-                  <label htmlFor="guest-name">宾客姓名</label>
-                  <Input id="guest-name" value={guestName} onChange={(event) => setGuestName(event.target.value)} maxLength={40} placeholder="请输入姓名" required />
-                  <label htmlFor="attendee-count">出席人数</label>
-                  <NativeSelect id="attendee-count" value={attendeeCount} onChange={(event) => setAttendeeCount(Number(event.target.value))} className="rsvp-select">
-                    {Array.from({ length: 11 }, (_, count) => <NativeSelectOption key={count} value={count}>{count === 0 ? '0 人（无法出席）' : `${count} 人`}</NativeSelectOption>)}
-                  </NativeSelect>
-                  <Button type="submit" disabled={formState === 'sending'}>
-                    <Users size={16} /> {formState === 'sending' ? '正在提交…' : '提交回执'}
-                  </Button>
-                  {formState === 'error' && <p className="form-error" role="alert">{formMessage}</p>}
-                </form>
-              )}
-            </div>
-          )}
-
-          {current === 10 && (
-            <div className="cover-copy ending-copy">
-              <p className="small-red">SEE YOU THERE</p>
-              <h2>囍</h2>
-              <p>良辰已定 · 敬备喜宴<br />期待与你共同分享这份喜悦</p>
-              <span>郑柯杨 & 彭丽丹</span>
-            </div>
-          )}
         </article>
 
         <div className="player-strip">
           <button onClick={() => changeSlide(-1)} aria-label="上一页"><ChevronLeft /></button>
           <button className="music-button" onClick={toggleMusic} aria-label={musicOn ? '暂停音乐' : '播放音乐'} aria-pressed={musicOn}>
             {musicOn ? <Pause /> : <Music2 />}
-            <span>{musicOn ? '婚礼小调 · 播放中' : '轻触播放音乐'}</span>
+            <span>{musicOn ? '请柬音乐 · 播放中' : '轻触播放音乐'}</span>
           </button>
           <span className="player-line"><i style={{ width: progress }} /></span>
-          <span className="track-number">{String(current + 1).padStart(2, '0')} / {slides.length}</span>
+          <span className="track-number">{String(current + 1).padStart(2, '0')} / {primarySlides.length}</span>
           <button onClick={() => changeSlide(1)} aria-label="下一页"><ChevronRight /></button>
         </div>
 
         <div className="page-dots" aria-label="请柬页码">
-          {slides.map((_, index) => (
+          {primarySlides.map((_, index) => (
             <button key={index} className={index === current ? 'active' : ''} onClick={() => {
               if (index === current || changing) return;
               setDirection(index > current ? 'next' : 'previous');
@@ -351,7 +269,53 @@ export default function Home() {
           ))}
         </div>
 
-        <p className="gesture-hint">轻触画面或左右滑动 · 切换下一张</p>
+        <Sheet>
+          <SheetTrigger className="more-button"><Images size={15} /> 查看更多 · 相册与回执</SheetTrigger>
+          <SheetContent side="bottom" className="more-sheet">
+            <div className="more-sheet-heading">
+              <SheetTitle>我们的故事</SheetTitle>
+              <SheetDescription>继续往下看，也请告诉我们你是否到场。</SheetDescription>
+            </div>
+            <div className="more-scroll">
+              <div className="more-gallery">
+                {gallerySlides.map((src, index) => (
+                  <figure key={src}>
+                    <img src={src} alt={`郑柯杨与彭丽丹的婚礼照片 ${index + 1}`} loading="lazy" />
+                  </figure>
+                ))}
+              </div>
+
+              <section className="more-rsvp" aria-label="婚礼出席回执">
+                {formState === 'success' ? (
+                  <div className="rsvp-success" role="status">
+                    <span><Check size={28} /></span>
+                    <h2>回执已收到</h2>
+                    <p>{formMessage}</p>
+                    <Button type="button" onClick={() => setFormState('idle')}>修改回执</Button>
+                  </div>
+                ) : (
+                  <form onSubmit={handleSubmit}>
+                    <p className="small-red">RSVP</p>
+                    <h2>期待与你相见</h2>
+                    <label htmlFor="guest-name">宾客姓名</label>
+                    <Input id="guest-name" value={guestName} onChange={(event) => setGuestName(event.target.value)} maxLength={40} placeholder="请输入姓名" required />
+                    <label htmlFor="attendee-count">出席人数</label>
+                    <NativeSelect id="attendee-count" value={attendeeCount} onChange={(event) => setAttendeeCount(Number(event.target.value))} className="rsvp-select">
+                      {Array.from({ length: 11 }, (_, count) => <NativeSelectOption key={count} value={count}>{count === 0 ? '0 人（无法出席）' : `${count} 人`}</NativeSelectOption>)}
+                    </NativeSelect>
+                    <Button type="submit" disabled={formState === 'sending'}>
+                      <Users size={16} /> {formState === 'sending' ? '正在提交…' : '提交回执'}
+                    </Button>
+                    {formState === 'error' && <p className="form-error" role="alert">{formMessage}</p>}
+                  </form>
+                )}
+              </section>
+              <p className="more-ending">良辰已定 · 敬备喜宴<br /><span>郑柯杨 & 彭丽丹</span></p>
+            </div>
+          </SheetContent>
+        </Sheet>
+
+        <p className="gesture-hint">向左滑下一张 · 向右滑上一张</p>
       </section>
     </main>
   );
