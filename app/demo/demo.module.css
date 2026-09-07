@@ -1,0 +1,231 @@
+.combinedCover,
+.combinedDetails {
+  position: absolute;
+  z-index: 3;
+  color: #211b16;
+  text-align: center;
+  text-shadow: 0 1px rgba(255, 255, 255, .35);
+  pointer-events: none;
+}
+
+.combinedCover {
+  top: 4.5%;
+  right: 4.5%;
+  left: auto;
+  width: 72%;
+  text-align: right;
+}
+
+.kicker {
+  margin: 0 0 8px;
+  color: #b52d20;
+  font-size: clamp(10px, 2.6vw, 13px);
+  font-weight: 700;
+  letter-spacing: .23em;
+}
+
+.combinedCover h1 {
+  margin: 0;
+  font-size: clamp(25px, 6.8vw, 35px);
+  font-weight: 500;
+  letter-spacing: .08em;
+  white-space: nowrap;
+}
+
+.combinedCover h1 span {
+  color: #b52d20;
+  font-size: .66em;
+}
+
+.dateBlock {
+  position: relative;
+  isolation: isolate;
+  width: 92%;
+  margin: 12px 0 0 auto;
+  padding: 10px 12px 11px;
+  background: transparent;
+}
+
+.month {
+  margin: 0;
+  font-size: clamp(17px, 4.6vw, 23px);
+  letter-spacing: .1em;
+  white-space: nowrap;
+}
+
+.dateNumber {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 9px;
+  height: clamp(49px, 13vw, 66px);
+}
+
+.dateNumber b {
+  color: #b52d20;
+  font-size: clamp(53px, 14vw, 72px);
+  font-weight: 500;
+  line-height: .8;
+}
+
+.dateNumber i {
+  writing-mode: vertical-rl;
+  font-size: 11px;
+  font-style: normal;
+  letter-spacing: .12em;
+}
+
+.lunar {
+  margin: 9px 0 9px;
+  font-size: clamp(10px, 2.7vw, 13px);
+  letter-spacing: .05em;
+  white-space: nowrap;
+}
+
+.time {
+  width: fit-content;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0 0 0 auto;
+  padding: 6px 12px;
+  color: #f5ead2;
+  background: #b52d20;
+  font-size: clamp(11px, 3vw, 14px);
+}
+
+.combinedDetails {
+  inset: 3.2% 5.5% auto;
+}
+
+.combinedDetails h2 {
+  margin: 0 0 9px;
+  font-size: clamp(25px, 6.7vw, 34px);
+  font-weight: 500;
+  letter-spacing: .08em;
+}
+
+.countdownGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+}
+
+.countdownGrid > span {
+  padding: 7px 2px 6px;
+  border-top: 1px solid rgba(55, 43, 32, .35);
+  border-bottom: 1px solid rgba(55, 43, 32, .22);
+}
+
+.countdownGrid b {
+  display: block;
+  color: #b52d20;
+  font-size: clamp(25px, 7vw, 37px);
+  font-weight: 500;
+  line-height: 1;
+}
+
+.countdownGrid small {
+  display: block;
+  margin-top: 4px;
+  font-size: 11px;
+}
+
+.venueCard {
+  position: relative;
+  isolation: isolate;
+  width: 54%;
+  margin: 11px -2% 0 auto;
+  padding: 10px 12px 12px;
+  background: transparent;
+  text-align: right;
+  pointer-events: auto;
+}
+
+.settlePrevious {
+  animation-name: demoSettlePrevious;
+}
+
+.venueTitle {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 7px;
+}
+
+.venueTitle > svg {
+  flex: 0 0 auto;
+  color: #b52d20;
+}
+
+.venueTitle p {
+  margin: 0;
+  font-size: clamp(15px, 4vw, 20px);
+  line-height: 1.2;
+  letter-spacing: .04em;
+  text-align: right;
+}
+
+.venueTitle span {
+  display: block;
+  margin-bottom: 6px;
+  color: #b52d20;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: .17em;
+}
+
+.address {
+  margin: 11px 0 10px;
+  color: #5e5043;
+  font-size: clamp(8px, 2vw, 9.5px);
+  line-height: 1.4;
+  letter-spacing: .02em;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.venueCard a {
+  width: fit-content;
+  display: flex;
+  align-items: center;
+  gap: 1px;
+  margin-left: auto;
+  padding: 4px 7px;
+  color: #f5ead2;
+  background: #b52d20;
+  font-size: 10px;
+  text-decoration: none;
+}
+
+.backLink {
+  position: absolute;
+  z-index: 5;
+  left: 50%;
+  bottom: -103px;
+  padding: 6px 12px;
+  color: rgba(247, 239, 223, .72);
+  border: 1px solid rgba(232, 216, 186, .24);
+  border-radius: 18px;
+  background: rgba(31, 25, 21, .64);
+  font-size: 12px;
+  letter-spacing: .05em;
+  text-decoration: none;
+  white-space: nowrap;
+  transform: translateX(-50%);
+}
+
+@keyframes demoSettlePrevious {
+  from {
+    opacity: .2;
+    transform: translateX(-8%) rotate(-2deg) scale(.98);
+  }
+}
+
+@media (max-width: 390px) {
+  .combinedCover { top: 3.5%; right: 4%; width: 76%; }
+  .dateBlock { width: 96%; margin-top: 9px; padding-block: 7px 8px; }
+  .combinedDetails { top: 2.7%; }
+  .venueCard { width: 58%; margin-top: 8px; margin-right: -2%; padding: 9px 9px 10px; }
+  .address { font-size: 8px; }
+}

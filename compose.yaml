@@ -1,0 +1,18 @@
+services:
+  wedding-invitation:
+    build:
+      context: .
+      args:
+        SITE_URL: ${SITE_URL}
+    container_name: wedding-invitation
+    restart: unless-stopped
+    env_file:
+      - .env
+    ports:
+      - "127.0.0.1:3100:3000"
+    volumes:
+      - ./data:/app/data
+    mem_limit: 384m
+    cpus: 0.75
+    security_opt:
+      - no-new-privileges:true

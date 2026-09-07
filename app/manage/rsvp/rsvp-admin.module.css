@@ -1,0 +1,50 @@
+.loginShell,
+.adminShell {
+  min-height: 100svh;
+  color: #281d17;
+  background:
+    radial-gradient(circle at 10% 0%, rgba(181, 45, 32, .14), transparent 32rem),
+    linear-gradient(145deg, #f2e6cf, #e8d2ac);
+  font-family: ui-sans-serif, system-ui, 'Microsoft YaHei', sans-serif;
+}
+
+.loginShell { display: grid; place-items: center; padding: 24px; }
+.loginCard { width: min(100%, 380px); background: rgba(255, 250, 240, .9); box-shadow: 0 24px 70px rgba(73, 43, 27, .2); }
+.eyebrow { margin: 0 0 6px; color: #a52c20; font-size: 12px; font-weight: 700; letter-spacing: .17em; }
+.loginTitle { font-family: Georgia, 'Songti SC', serif; font-size: 27px; }
+.loginForm { display: grid; gap: 12px; }
+.loginForm label { font-size: 14px; font-weight: 600; }
+.loginForm input { height: 42px; background: #fffaf0; }
+.loginForm button { height: 42px; margin-top: 3px; }
+.error { margin: 8px 0 0; color: #a3261b; font-size: 14px; }
+
+.adminShell { padding: 30px 18px 60px; }
+.dashboard { width: min(1100px, 100%); margin: 0 auto; }
+.header { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; margin-bottom: 24px; }
+.header h1 { margin: 0; font-family: Georgia, 'Songti SC', serif; font-size: clamp(34px, 5vw, 52px); font-weight: 500; }
+.header > div > p:last-child { margin: 8px 0 0; color: #6d5b4d; font-size: 14px; }
+.actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; }
+.exportButton { height: 32px; display: inline-flex; align-items: center; gap: 6px; padding: 0 11px; color: #fff8ed; border-radius: 8px; background: #a92e22; font-size: 14px; font-weight: 600; text-decoration: none; }
+.exportButton svg { width: 16px; height: 16px; }
+
+.metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 16px; }
+.metrics > div { background: rgba(255, 250, 240, .83); box-shadow: 0 10px 25px rgba(73, 43, 27, .08); }
+.metrics [data-slot='card-title'] { color: #6f5a49; font-size: 13px; }
+.metrics [data-slot='card-content'] { display: flex; align-items: baseline; gap: 6px; }
+.metrics strong { color: #a92e22; font-family: Georgia, serif; font-size: 35px; font-weight: 500; }
+.metrics span { color: #6f5a49; font-size: 13px; }
+
+.listCard { background: rgba(255, 250, 240, .9); box-shadow: 0 18px 45px rgba(73, 43, 27, .11); }
+.listHeader { display: flex; flex-direction: row; justify-content: space-between; align-items: flex-start; }
+.listHeader p { margin: 5px 0 0; color: #756252; font-size: 13px; }
+.listHeader > svg { color: #a92e22; }
+.guestName { min-width: 130px; font-weight: 650; }
+.empty { padding: 64px 16px; color: #7a6858; text-align: center; }
+
+@media (max-width: 760px) {
+  .adminShell { padding: 22px 12px 44px; }
+  .header { align-items: flex-start; flex-direction: column; }
+  .actions { justify-content: flex-start; }
+  .metrics { grid-template-columns: repeat(2, 1fr); }
+  .metrics strong { font-size: 30px; }
+}

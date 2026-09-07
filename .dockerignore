@@ -1,0 +1,11 @@
+.git
+.next
+.vinext
+.wrangler
+dist
+node_modules
+data
+.env*
+npm-debug.log*
+public/invite-*.png
+public/compact-location-card.png
