@@ -48,6 +48,7 @@ const moreSlides: Slide[] = [
 
 const weddingAt = new Date('2026-10-25T11:58:00+08:00');
 const amapUrl = 'https://surl.amap.com/1nY9E0y1fejz';
+const rsvpApiBase = (process.env.NEXT_PUBLIC_RSVP_API_URL ?? 'https://api.lippialab.top').replace(/\/$/, '');
 
 function getCountdown() {
   const distance = Math.max(0, weddingAt.getTime() - Date.now());
@@ -60,7 +61,7 @@ function getCountdown() {
 }
 
 async function postRsvp(guestName: string, attendeeCount: number, company = '') {
-  const response = await fetch('/api/rsvp', {
+  const response = await fetch(`${rsvpApiBase}/rsvp`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ guestName, attendeeCount, company }),

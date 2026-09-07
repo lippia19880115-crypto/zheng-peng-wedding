@@ -27,6 +27,8 @@ type RsvpData = {
   };
 };
 
+const rsvpApiBase = (process.env.NEXT_PUBLIC_RSVP_API_URL ?? 'https://api.lippialab.top').replace(/\/$/, '');
+
 function formatDate(value: string) {
   const normalized = value.includes('T') ? value : `${value.replace(' ', 'T')}Z`;
   return new Intl.DateTimeFormat('zh-CN', {
@@ -46,7 +48,7 @@ export default function RsvpAdminPage() {
   const loadRsvps = useCallback(async () => {
     setLoading(true);
     try {
-      const response = await fetch('/api/admin/rsvps', { cache: 'no-store' });
+      const response = await fetch(`${rsvpApiBase}/rsvps`, { cache: 'no-store' });
       const result = await response.json() as RsvpData & { ok?: boolean; message?: string };
       if (!response.ok) throw new Error(result.message || '读取回执失败');
       setData(result);
@@ -77,7 +79,7 @@ export default function RsvpAdminPage() {
             <Button variant="outline" onClick={() => void loadRsvps()} disabled={loading}>
               <RefreshCw className={loading ? styles.spinning : ''} />刷新
             </Button>
-            <Button onClick={() => window.location.assign('/api/admin/rsvps/export')}><Download />导出名单</Button>
+            <Button onClick={() => window.location.assign(`${rsvpApiBase}/rsvps/export`)}><Download />导出名单</Button>
           </div>
         </header>
 
