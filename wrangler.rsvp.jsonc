@@ -4,6 +4,13 @@
   "main": "worker/rsvp-api.ts",
   "compatibility_date": "2026-05-15",
   "workers_dev": true,
+  "preview_urls": false,
+  "routes": [
+    {
+      "pattern": "api.lippialab.top",
+      "custom_domain": true
+    }
+  ],
   "d1_databases": [
     {
       "binding": "DB",
