@@ -77,7 +77,7 @@ export default function Home() {
   const [coverCopyReady, setCoverCopyReady] = useState(false);
   const [changing, setChanging] = useState(false);
   const [direction, setDirection] = useState<'next' | 'previous'>('next');
-  const [musicOn, setMusicOn] = useState(false);
+  const [musicOn, setMusicOn] = useState(true);
   const [countdown, setCountdown] = useState(getCountdown);
   const [guestName, setGuestName] = useState('');
   const [company, setCompany] = useState('');
@@ -86,6 +86,7 @@ export default function Home() {
   const [formMessage, setFormMessage] = useState('');
   const pointerStart = useRef<number | null>(null);
   const musicPlayer = useRef<HTMLAudioElement | null>(null);
+  const musicWanted = useRef(true);
   const slides = mode === 'main' ? mainSlides : moreSlides;
   const activeSlide = slides[current];
 
@@ -167,18 +168,60 @@ export default function Home() {
     return () => window.removeEventListener('keydown', onKeyDown);
   }, [changeSlide]);
 
+  useEffect(() => {
+    const player = musicPlayer.current;
+    if (!player) return;
+    let disposed = false;
+
+    const removeUnlockListeners = () => {
+      window.removeEventListener('pointerdown', unlockPlayback, true);
+      window.removeEventListener('keydown', unlockPlayback, true);
+      document.removeEventListener('WeixinJSBridgeReady', unlockPlayback);
+    };
+
+    const tryStartPlayback = async () => {
+      if (!musicWanted.current) return;
+      try {
+        await player.play();
+        if (!disposed) setMusicOn(true);
+        removeUnlockListeners();
+      } catch {
+        // Mobile browsers commonly require the first user gesture before audio can start.
+      }
+    };
+
+    function unlockPlayback(event: Event) {
+      const target = event.target;
+      if (target instanceof Element && target.closest('.music-button')) return;
+      void tryStartPlayback();
+    }
+
+    void tryStartPlayback();
+    window.addEventListener('pointerdown', unlockPlayback, true);
+    window.addEventListener('keydown', unlockPlayback, true);
+    document.addEventListener('WeixinJSBridgeReady', unlockPlayback);
+
+    return () => {
+      disposed = true;
+      removeUnlockListeners();
+    };
+  }, []);
+
   async function toggleMusic() {
     const player = musicPlayer.current;
     if (!player) return;
-    if (musicOn) {
+    if (musicWanted.current) {
+      musicWanted.current = false;
       player.pause();
       setMusicOn(false);
       return;
     }
+    musicWanted.current = true;
     try {
       await player.play();
       setMusicOn(true);
     } catch {
+      musicWanted.current = false;
       setMusicOn(false);
     }
   }
@@ -271,7 +314,7 @@ export default function Home() {
 
   return (
     <main className="invitation-shell">
-      <audio ref={musicPlayer} src="/wedding-music.mp3" loop preload="metadata" />
+      <audio ref={musicPlayer} src="/wedding-music.mp3" loop autoPlay preload="auto" />
       <section className="album-stage" aria-label="郑柯杨与彭丽丹的婚礼请柬">
         <article
           className="album-cover"

@@ -24,27 +24,57 @@
 .header h1 { margin: 0; font-family: Georgia, 'Songti SC', serif; font-size: clamp(34px, 5vw, 52px); font-weight: 500; }
 .header > div > p:last-child { margin: 8px 0 0; color: #6d5b4d; font-size: 14px; }
 .actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; }
-.exportButton { height: 32px; display: inline-flex; align-items: center; gap: 6px; padding: 0 11px; color: #fff8ed; border-radius: 8px; background: #a92e22; font-size: 14px; font-weight: 600; text-decoration: none; }
+.refreshButton,
+.exportButton { height: 38px; display: inline-flex; align-items: center; gap: 7px; padding: 0 14px; border-radius: 8px; font-size: 14px; font-weight: 650; }
+.refreshButton { color: #37271e; border-color: #bda78b; background: #fffaf0; }
+.refreshButton:hover { color: #281d17; background: #f5e7cc; }
+.exportButton { color: #fff8ed; border-color: #a92e22; background: #a92e22; }
+.exportButton:hover { color: #fff; background: #8f241b; }
+.refreshButton svg,
 .exportButton svg { width: 16px; height: 16px; }
+.spinning { animation: spin .8s linear infinite; }
 
-.metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 16px; }
-.metrics > div { background: rgba(255, 250, 240, .83); box-shadow: 0 10px 25px rgba(73, 43, 27, .08); }
+.metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 16px; }
+.metrics > div { border: 1px solid rgba(116, 85, 58, .14); background: rgba(255, 250, 240, .94); box-shadow: 0 10px 25px rgba(73, 43, 27, .08); }
 .metrics [data-slot='card-title'] { color: #6f5a49; font-size: 13px; }
-.metrics [data-slot='card-content'] { display: flex; align-items: baseline; gap: 6px; }
+.metrics [data-slot='card-content'] { display: grid; grid-template-columns: auto 1fr; align-items: end; gap: 2px 7px; }
+.metrics [data-slot='card-content'] > span { grid-column: 1 / -1; }
 .metrics strong { color: #a92e22; font-family: Georgia, serif; font-size: 35px; font-weight: 500; }
 .metrics span { color: #6f5a49; font-size: 13px; }
+.metrics small { padding-bottom: 5px; color: #756354; }
 
-.listCard { background: rgba(255, 250, 240, .9); box-shadow: 0 18px 45px rgba(73, 43, 27, .11); }
-.listHeader { display: flex; flex-direction: row; justify-content: space-between; align-items: flex-start; }
+.listCard { border: 1px solid rgba(116, 85, 58, .14); background: rgba(255, 250, 240, .96); box-shadow: 0 18px 45px rgba(73, 43, 27, .11); }
+.listHeader { display: flex; flex-direction: row; justify-content: space-between; align-items: center; padding-bottom: 3px; }
+.listHeader [data-slot='card-title'] { display: inline-flex; align-items: center; gap: 8px; color: #2b2019; font-size: 18px; font-weight: 700; }
 .listHeader p { margin: 5px 0 0; color: #756252; font-size: 13px; }
-.listHeader > svg { color: #a92e22; }
+.listHeader svg { width: 20px; height: 20px; color: #a92e22; }
+.listHeader > span { color: #705d4d; font-size: 13px; font-weight: 600; }
+.listCard [data-slot='card-content'] { padding-bottom: 16px; }
+.listCard [data-slot='table-container'] { border: 1px solid #ddc9aa; border-radius: 8px; }
+.listCard [data-slot='table-head'] { height: 42px; padding: 0 12px; color: #57463a; background: #f4e5ca; font-weight: 700; }
+.listCard [data-slot='table-row'] { border-bottom: 1px solid #e4d2b6; }
+.listCard [data-slot='table-cell'] { padding: 14px 12px; color: #2b2019; }
+.listCard [data-slot='table-body'] [data-slot='table-row']:hover { background: #f8edda; }
 .guestName { min-width: 130px; font-weight: 650; }
+.mobileRecords { display: none; }
 .empty { padding: 64px 16px; color: #7a6858; text-align: center; }
+
+@keyframes spin { to { transform: rotate(360deg); } }
 
 @media (max-width: 760px) {
   .adminShell { padding: 22px 12px 44px; }
   .header { align-items: flex-start; flex-direction: column; }
   .actions { justify-content: flex-start; }
-  .metrics { grid-template-columns: repeat(2, 1fr); }
+  .metrics { grid-template-columns: 1fr; }
   .metrics strong { font-size: 30px; }
+  .desktopTable { display: none; }
+  .mobileRecords { display: grid; gap: 10px; }
+  .mobileRecord { padding: 14px; border: 1px solid #ddc9aa; border-radius: 9px; background: #fffaf0; }
+  .mobileRecordHeader { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding-bottom: 12px; border-bottom: 1px solid #eadbc2; }
+  .mobileRecordHeader > strong { min-width: 0; overflow-wrap: anywhere; color: #281d17; font-size: 16px; }
+  .mobileRecord dl { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin: 13px 0 0; }
+  .mobileRecord dl > div { display: grid; gap: 4px; }
+  .mobileRecord dt { color: #7a6756; font-size: 12px; }
+  .mobileRecord dd { margin: 0; color: #2b2019; font-size: 14px; }
+  .mobileRecord dd strong { color: #a92e22; font-size: 20px; }
 }

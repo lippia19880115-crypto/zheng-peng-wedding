@@ -76,21 +76,21 @@ export default function RsvpAdminPage() {
             <p>每位宾客只展示最后一次填写的人数。</p>
           </div>
           <div className={styles.actions}>
-            <Button variant="outline" onClick={() => void loadRsvps()} disabled={loading}>
+            <Button className={styles.refreshButton} variant="outline" onClick={() => void loadRsvps()} disabled={loading}>
               <RefreshCw className={loading ? styles.spinning : ''} />刷新
             </Button>
-            <Button onClick={() => window.location.assign(`${rsvpApiBase}/rsvps/export`)}><Download />导出名单</Button>
+            <Button className={styles.exportButton} onClick={() => window.location.assign(`${rsvpApiBase}/rsvps/export`)}><Download />导出名单</Button>
           </div>
         </header>
 
-        <div className={styles.stats}>
+        <div className={styles.metrics}>
           <Card><CardContent><span>回执人数</span><strong>{summary?.attendingGuestCount ?? 0}</strong><small>确认到场总人数</small></CardContent></Card>
           <Card><CardContent><span>已回复</span><strong>{summary?.responseCount ?? 0}</strong><small>份有效回执</small></CardContent></Card>
           <Card><CardContent><span>无法出席</span><strong>{summary?.declinedResponseCount ?? 0}</strong><small>份回执</small></CardContent></Card>
         </div>
 
-        <Card>
-          <CardHeader className={styles.tableHeader}>
+        <Card className={styles.listCard}>
+          <CardHeader className={styles.listHeader}>
             <CardTitle><UsersRound />宾客名单</CardTitle>
             <span>{data?.records.length ?? 0} 条</span>
           </CardHeader>
@@ -99,19 +99,37 @@ export default function RsvpAdminPage() {
             {!data?.records.length ? (
               <div className={styles.empty}>{loading ? '正在读取回执…' : '还没有收到回执'}</div>
             ) : (
-              <Table>
-                <TableHeader><TableRow><TableHead>姓名</TableHead><TableHead>人数</TableHead><TableHead>更新时间</TableHead><TableHead>状态</TableHead></TableRow></TableHeader>
-                <TableBody>
+              <>
+                <div className={styles.desktopTable}>
+                  <Table>
+                    <TableHeader><TableRow><TableHead>姓名</TableHead><TableHead>人数</TableHead><TableHead>更新时间</TableHead><TableHead>状态</TableHead></TableRow></TableHeader>
+                    <TableBody>
+                      {data.records.map((record) => (
+                        <TableRow key={record.id}>
+                          <TableCell className={styles.guestName}>{record.guestName}</TableCell>
+                          <TableCell><strong>{record.attendeeCount}</strong> 人</TableCell>
+                          <TableCell>{formatDate(record.updatedAt)}</TableCell>
+                          <TableCell>{record.revisionCount > 1 ? <Badge variant="outline">修改 {record.revisionCount - 1} 次</Badge> : <Badge variant="secondary">首次提交</Badge>}</TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
+                <div className={styles.mobileRecords}>
                   {data.records.map((record) => (
-                    <TableRow key={record.id}>
-                      <TableCell className={styles.guestName}>{record.guestName}</TableCell>
-                      <TableCell><strong>{record.attendeeCount}</strong> 人</TableCell>
-                      <TableCell>{formatDate(record.updatedAt)}</TableCell>
-                      <TableCell>{record.revisionCount > 1 ? <Badge variant="outline">修改 {record.revisionCount - 1} 次</Badge> : <Badge variant="secondary">首次提交</Badge>}</TableCell>
-                    </TableRow>
+                    <article className={styles.mobileRecord} key={record.id}>
+                      <div className={styles.mobileRecordHeader}>
+                        <strong>{record.guestName}</strong>
+                        {record.revisionCount > 1 ? <Badge variant="outline">修改 {record.revisionCount - 1} 次</Badge> : <Badge variant="secondary">首次提交</Badge>}
+                      </div>
+                      <dl>
+                        <div><dt>出席人数</dt><dd><strong>{record.attendeeCount}</strong> 人</dd></div>
+                        <div><dt>更新时间</dt><dd>{formatDate(record.updatedAt)}</dd></div>
+                      </dl>
+                    </article>
                   ))}
-                </TableBody>
-              </Table>
+                </div>
+              </>
             )}
           </CardContent>
         </Card>
