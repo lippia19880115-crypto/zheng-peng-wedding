@@ -16,6 +16,17 @@
   text-align: right;
 }
 
+.coverCopyWaiting {
+  visibility: hidden;
+  opacity: 0;
+}
+
+.coverCopyReady {
+  visibility: visible;
+  opacity: 1;
+  animation: revealCoverCopy .24s ease-out both;
+}
+
 .kicker {
   margin: 0 0 8px;
   color: #b52d20;
@@ -222,10 +233,21 @@
   }
 }
 
+@keyframes revealCoverCopy {
+  from {
+    opacity: 0;
+    transform: translateY(3px);
+  }
+}
+
 @media (max-width: 390px) {
   .combinedCover { top: 3.5%; right: 4%; width: 76%; }
   .dateBlock { width: 96%; margin-top: 9px; padding-block: 7px 8px; }
   .combinedDetails { top: 2.7%; }
   .venueCard { width: 58%; margin-top: 8px; margin-right: -2%; padding: 9px 9px 10px; }
   .address { font-size: 8px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .coverCopyReady { animation: none; }
 }

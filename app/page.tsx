@@ -74,6 +74,7 @@ async function postRsvp(guestName: string, attendeeCount: number, company = '') 
 export default function Home() {
   const [mode, setMode] = useState<'main' | 'more'>('main');
   const [current, setCurrent] = useState(0);
+  const [coverCopyReady, setCoverCopyReady] = useState(false);
   const [changing, setChanging] = useState(false);
   const [direction, setDirection] = useState<'next' | 'previous'>('next');
   const [musicOn, setMusicOn] = useState(false);
@@ -87,6 +88,44 @@ export default function Home() {
   const musicPlayer = useRef<HTMLAudioElement | null>(null);
   const slides = mode === 'main' ? mainSlides : moreSlides;
   const activeSlide = slides[current];
+
+  useEffect(() => {
+    const viewport = window.visualViewport;
+    let settleTimer: number | undefined;
+    let firstFrame: number | undefined;
+    let secondFrame: number | undefined;
+    let revealed = false;
+
+    const stopListening = () => {
+      window.removeEventListener('resize', waitForStableViewport);
+      viewport?.removeEventListener('resize', waitForStableViewport);
+    };
+
+    const revealCoverCopy = () => {
+      if (revealed) return;
+      revealed = true;
+      stopListening();
+      firstFrame = window.requestAnimationFrame(() => {
+        secondFrame = window.requestAnimationFrame(() => setCoverCopyReady(true));
+      });
+    };
+
+    function waitForStableViewport() {
+      window.clearTimeout(settleTimer);
+      settleTimer = window.setTimeout(revealCoverCopy, 200);
+    }
+
+    window.addEventListener('resize', waitForStableViewport);
+    viewport?.addEventListener('resize', waitForStableViewport);
+    waitForStableViewport();
+
+    return () => {
+      stopListening();
+      window.clearTimeout(settleTimer);
+      if (firstFrame !== undefined) window.cancelAnimationFrame(firstFrame);
+      if (secondFrame !== undefined) window.cancelAnimationFrame(secondFrame);
+    };
+  }, []);
 
   const changeSlide = useCallback((step: 1 | -1) => {
     if (changing) return;
@@ -254,7 +293,7 @@ export default function Home() {
           />
 
           {activeSlide.kind === 'cover' && (
-            <div className={styles.combinedCover}>
+            <div className={`${styles.combinedCover} ${coverCopyReady ? styles.coverCopyReady : styles.coverCopyWaiting}`}>
               <p className={styles.kicker}>WEDDING INVITATION</p>
               <h1>郑柯杨 <span>×</span> 彭丽丹</h1>
               <div className={styles.dateBlock}>
