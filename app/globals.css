@@ -191,8 +191,8 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .rsvp-panel {
   position: absolute;
   z-index: 4;
-  inset: 4.5% 7% auto;
-  padding: clamp(17px, 4vw, 24px);
+  inset: 3.5% 6% auto;
+  padding: clamp(12px, 3vw, 18px);
   color: var(--ink);
   background: rgba(242, 228, 199, .93);
   border: 1px solid rgba(67,50,34,.23);
@@ -200,16 +200,16 @@ button, a { -webkit-tap-highlight-color: transparent; }
   cursor: default;
 }
 
-.rsvp-panel form { display: grid; gap: 8px; }
+.rsvp-panel form { display: grid; gap: 5px; }
 .rsvp-honeypot { position: absolute !important; left: -10000px !important; width: 1px !important; height: 1px !important; overflow: hidden !important; }
 .rsvp-panel .small-red { margin-bottom: 0; }
-.rsvp-panel h2 { margin: 0 0 6px; }
-.rsvp-panel label { margin-top: 2px; font-size: 13px; letter-spacing: .08em; }
-.rsvp-panel input, .rsvp-panel select { height: 38px; border-radius: 1px; background: rgba(255,250,239,.72); font-size: 16px; }
+.rsvp-panel h2 { margin: 0 0 3px; font-size: clamp(22px, 5.5vw, 30px); }
+.rsvp-panel label { margin-top: 0; font-size: 12px; letter-spacing: .08em; }
+.rsvp-panel input, .rsvp-panel select { height: 34px; border-radius: 1px; background: rgba(255,250,239,.72); font-size: 15px; }
 .rsvp-panel .rsvp-select { width: 100%; }
-.rsvp-panel button[type='submit'], .rsvp-success button { height: 40px; margin-top: 7px; border-radius: 1px; }
+.rsvp-panel button[type='submit'], .rsvp-success button { height: 36px; margin-top: 4px; border-radius: 1px; }
 .form-error { margin: 2px 0 0; color: #9c251b; font-size: 13px; }
-.rsvp-success { min-height: 248px; display: grid; place-items: center; align-content: center; text-align: center; }
+.rsvp-success { min-height: 204px; display: grid; place-items: center; align-content: center; text-align: center; }
 .rsvp-success > span { width: 54px; height: 54px; display: grid; place-items: center; margin-bottom: 13px; color: var(--cream); background: var(--red); border-radius: 50%; }
 .rsvp-success h2 { margin-bottom: 7px; }
 .rsvp-success p { margin: 0 0 10px; font-size: 14px; }
