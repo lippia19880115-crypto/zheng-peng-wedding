@@ -242,9 +242,9 @@ button, a { -webkit-tap-highlight-color: transparent; }
   letter-spacing: .06em;
 }
 
-.player-strip > button { width: 28px; height: 28px; display: grid; place-items: center; padding: 0; color: inherit; border: 1px solid rgba(232,216,186,.26); border-radius: 50%; background: rgba(31,25,21,.74); cursor: pointer; }
-.player-strip > button svg { width: 15px; height: 15px; }
-.player-strip .music-button { width: auto; grid-template-columns: auto auto; padding: 0 8px; border-radius: 20px; }
+.player-strip > button { width: 28px; height: 28px; display: inline-flex; align-items: center; justify-content: center; padding: 0; color: inherit; border: 1px solid rgba(232,216,186,.26); border-radius: 50%; background: rgba(31,25,21,.74); line-height: 0; cursor: pointer; }
+.player-strip > button svg { width: 15px; height: 15px; display: block; flex: 0 0 15px; }
+.player-strip .music-button { width: auto; gap: 5px; padding: 0 8px; border-radius: 20px; }
 .music-button span { white-space: nowrap; }
 .player-line { height: 1px; background: rgba(232,216,186,.25); overflow: hidden; }
 .player-line i { display: block; height: 100%; background: var(--red); transition: width .45s ease; }
@@ -261,6 +261,7 @@ button, a { -webkit-tap-highlight-color: transparent; }
 @media (max-width: 440px) {
   .location-copy { width: 63%; }
   .player-strip .music-button span { display: none; }
+  .player-strip .music-button { width: 28px; min-width: 28px; gap: 0; padding: 0; }
   .player-strip { grid-template-columns: 28px 28px 1fr auto 28px; }
 }
 
