@@ -385,7 +385,7 @@ export default function Home() {
 
         {mode === 'main' && current === mainSlides.length - 1 && (
           <button className="mode-button mode-button--more" type="button" onClick={() => switchMode('more')}>
-            <Images size={15} /> 查看更多 · 我们的故事
+            <Images size={15} /> 查看更多 · 我们的照片
           </button>
         )}
 
