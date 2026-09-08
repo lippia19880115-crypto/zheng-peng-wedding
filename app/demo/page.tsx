@@ -114,10 +114,6 @@ export default function DemoPage() {
     <main className="invitation-shell">
       <audio ref={musicPlayer} src="/wedding-music.mp3" loop preload="metadata" />
       <section className="album-stage" aria-label="三页精简请柬设计 Demo">
-        <div className={`vinyl-record ${musicOn ? 'vinyl-record--playing' : ''} ${changing ? 'vinyl-record--changing' : ''}`} aria-hidden="true">
-          <span className="vinyl-label">Z · P</span>
-        </div>
-
         <article
           className="album-cover"
           onClick={() => changeSlide(1)}
@@ -206,12 +202,6 @@ export default function DemoPage() {
           <span className="player-line"><i style={{ width: progress }} /></span>
           <span className="track-number">{String(current + 1).padStart(2, '0')} / 03</span>
           <button onClick={() => changeSlide(1)} aria-label="下一页"><ChevronRight /></button>
-        </div>
-
-        <div className="page-dots" aria-label="Demo 页码">
-          {demoSlides.map((_, index) => (
-            <button key={index} className={index === current ? 'active' : ''} onClick={() => setCurrent(index)} aria-label={`前往第 ${index + 1} 页`} />
-          ))}
         </div>
 
         <a className={styles.backLink} href="/">返回当前方案</a>

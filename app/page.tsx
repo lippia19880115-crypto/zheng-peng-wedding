@@ -234,10 +234,6 @@ export default function Home() {
     <main className="invitation-shell">
       <audio ref={musicPlayer} src="/wedding-music.mp3" loop preload="metadata" />
       <section className="album-stage" aria-label="郑柯杨与彭丽丹的婚礼请柬">
-        <div className={`vinyl-record ${musicOn ? 'vinyl-record--playing' : ''} ${changing ? 'vinyl-record--changing' : ''}`} aria-hidden="true">
-          <span className="vinyl-label">Z · P</span>
-        </div>
-
         <article
           className="album-cover"
           onClick={() => changeSlide(1)}
@@ -385,17 +381,6 @@ export default function Home() {
           <span className="player-line"><i style={{ width: progress }} /></span>
           <span className="track-number">{String(current + 1).padStart(2, '0')} / {String(slides.length).padStart(2, '0')}</span>
           <button onClick={() => changeSlide(1)} aria-label="下一页"><ChevronRight /></button>
-        </div>
-
-        <div className="page-dots" aria-label={mode === 'main' ? '三页请柬页码' : '更多内容页码'}>
-          {slides.map((slide, index) => (
-            <button key={slide.src} className={index === current ? 'active' : ''} onClick={() => {
-              if (index === current || changing) return;
-              setDirection(index > current ? 'next' : 'previous');
-              setChanging(true);
-              window.setTimeout(() => { setCurrent(index); setChanging(false); }, 430);
-            }} aria-label={`前往第 ${index + 1} 页`} />
-          ))}
         </div>
 
         {mode === 'main' && current === mainSlides.length - 1 && (
